@@ -1,6 +1,8 @@
 import React from "react";
+import { Link } from 'react-router-dom';
 
 export class Register extends React.Component {
+
     constructor(props) {
         super(props);
     }
