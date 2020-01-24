@@ -4,13 +4,26 @@ import './style.css';
 import UserInput from "./UserInput";
 import axios from 'axios'
 
+
 export class Login extends React.Component {
-    state = {
-        username: '',
-        error: ''
-    }
+	
+	constructor(props){
+		super(props);
+		this.state = {lng: 0, lat: 0, username: '', error: ''}
+	}
+	
     handleChange = event => {
         this.setState({ username: event.target.value, error: '' });
+		if (this.state.lng == 0 || this.state.lat == 0){
+			if (navigator && navigator.geolocation) {
+				navigator.geolocation.getCurrentPosition(pos => {
+					this.setState({
+						lat: pos.coords.latitude,
+						lng: pos.coords.longitude
+					});
+                });
+			}
+		}
     };
 
     handleSubmit = event => {
@@ -20,13 +33,18 @@ export class Login extends React.Component {
                 error: 'Please enter username'
             })
         }
+		else if (this.state.lng == 0 || this.state.lat == 0){
+			this.setState({
+                error: 'Geolocation not yet allowed. Allow Geolocation and try again.'
+            })
+		}
         else {
 			axios.get('http://localhost:3000/user/' + this.state.username).then(resp => {
 				if ((resp.data.length || []).length === 0){
 					axios.post('http://localhost:3000/user/add/', {
 					username: this.state.username,
-					longitude: '100',
-					latitude: '100',
+					longitude: this.state.lng,
+					latitude: this.state.lat,
 					status: '1'
 				  })
 				  .then(function (response) {  
@@ -43,8 +61,8 @@ export class Login extends React.Component {
 				else{
 					axios.post('http://localhost:3000/user/update/', {
 					username: this.state.username,
-					longitude: '200',
-					latitude: '200',
+					longitude: this.state.lng,
+					latitude: this.state.lat,
 					status: '1'
 				  }).then(function (response) {  
 						if(response.data == 'Update successful'){
