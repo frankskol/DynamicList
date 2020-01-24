@@ -21,22 +21,42 @@ export class Login extends React.Component {
             })
         }
         else {
-            axios.post('http://localhost:3000/user/add/', {
-				username: this.state.username,
-				longitude: '100',
-				latitude: '100',
-				status: '1'
-			  })
-			  .then(function (response) {  
-				if(response.data == 'Insert successful'){
-					window.location = '/map';
-                    console.log('success');
+			axios.get('http://localhost:3000/user/' + this.state.username).then(resp => {
+				if ((resp.data.length || []).length === 0){
+					axios.post('http://localhost:3000/user/add/', {
+					username: this.state.username,
+					longitude: '100',
+					latitude: '100',
+					status: '1'
+				  })
+				  .then(function (response) {  
+					if(response.data == 'Insert successful'){
+						window.location = '/map';
+						console.log('success');
+					}
+					if(response.data == 'Insert failed'){
+						throw "Username already exists";
+					}
+				  })
+				  .catch(error => { console.log(error); this.setState({ error: 'Username already exists' }) })
 				}
-				if(response.data == 'Insert failed'){
-					throw "Username already exists";
+				else{
+					axios.post('http://localhost:3000/user/update/', {
+					username: this.state.username,
+					longitude: '200',
+					latitude: '200',
+					status: '1'
+				  }).then(function (response) {  
+						if(response.data == 'Update successful'){
+							window.location = '/map';
+							console.log('success');
+						}
+						if(response.data == 'Update failed'){
+							throw "Update failed";
+						}
+				  }).catch(error => { console.log(error); this.setState({ error: 'Username already exists' }) })
 				}
-			  })
-			  .catch(error => { console.log(error); this.setState({ error: 'Username already exists' }) })
+			});
         }
     }
     render() {

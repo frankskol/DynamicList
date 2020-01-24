@@ -53,5 +53,18 @@ Router.post("/add/", (req, res) =>{
     })
 })
 
+//update one user
+Router.post("/update/", (req, res) =>{
+    mysqlConnection.query("UPDATE react.User SET longitude = ?, latitude = ?, status = ? WHERE username = ?", [ req.body.longitude, req.body.latitude, req.body.status, req.body.username], (err, rows, fields) => {
+        if (!err) {
+            res.send('Update successful');
+        }
+        else {
+			res.send('Update failed');
+            console.log(err);
+        }
+    })
+})
+
 
 module.exports = Router;
