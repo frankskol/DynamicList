@@ -1,11 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import axios from 'axios'
 
 const mapStyles = {
     map: {
         position: 'absolute',
         width: '100%',
-        height: '100%'
+        height: '90%'
     }
 };
 export class CurrentLocation extends React.Component {
@@ -38,12 +39,16 @@ export class CurrentLocation extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
+		
         if (prevProps.google !== this.props.google) {
             this.loadMap();
         }
         if (prevState.currentLocation !== this.state.currentLocation) {
             this.recenterMap();
         }
+		if (prevProps.users != this.props.users) {
+			this.renderChildren();
+		}
     }
 
     loadMap() {
