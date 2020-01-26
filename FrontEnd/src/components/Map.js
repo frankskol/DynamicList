@@ -16,8 +16,6 @@ var icons = {
 
 };
 
-var icon =  "iconTest.png";
-
 export class MapContainer extends Component {
 	
 	constructor(props) {

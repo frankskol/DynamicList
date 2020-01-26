@@ -4,14 +4,12 @@ import './style.css';
 import UserInput from "./UserInput";
 import axios from 'axios'
 
-
 export class Login extends React.Component {
 	
 	constructor(props){
 		super(props);
 		this.state = {lng: 0, lat: 0, username: '', error: ''}
 	}
-	
     handleChange = event => {
         this.setState({ username: event.target.value, error: '' });
 		if (this.state.lng == 0 || this.state.lat == 0){
@@ -35,7 +33,7 @@ export class Login extends React.Component {
         }
 		else if (this.state.lng == 0 || this.state.lat == 0){
 			this.setState({
-                error: 'Geolocation not yet allowed. Allow Geolocation and try again.'
+                error: 'Allow Geolocation and try again.'
             })
 		}
         else {
@@ -56,7 +54,7 @@ export class Login extends React.Component {
 						throw "Username already exists";
 					}
 				  })
-				  .catch(error => { console.log(error); this.setState({ error: 'Username already exists' }) })
+				  .catch(error => { console.log(error); this.setState({ error: 'Database connection failed' }) })
 				}
 				else{
 					axios.post('http://localhost:3000/user/update/', {
@@ -72,9 +70,12 @@ export class Login extends React.Component {
 						if(response.data == 'Update failed'){
 							throw "Update failed";
 						}
-				  }).catch(error => { console.log(error); this.setState({ error: 'Username already exists' }) })
+				  }).catch(error => { console.log(error); this.setState({ error: 'Database connection failed' }) })
 				}
 			});
+			localStorage.setItem('user', this.state.username);
+			localStorage.setItem('lat', this.state.lng);
+			localStorage.setItem('lng', this.state.lat);
         }
     }
     render() {
@@ -87,7 +88,7 @@ export class Login extends React.Component {
                     {
                         this.state.error === '' ? null : <div className='error'>{this.state.error}</div>
                     }
-                    <button className='button' type="submit" onClick={this.handleSubmit}>Login</button>
+                    <button className='button' type="submit" onClick={this.handleSubmit}> Login</button>
                 </form>
             </div >
         );

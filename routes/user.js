@@ -28,7 +28,7 @@ Router.get("/:username", (req, res) =>{
 })
 
 //delete one user
-Router.delete("/", (req, res) =>{
+Router.delete("/:username", (req, res) =>{
 
     mysqlConnection.query("DELETE FROM react.User WHERE username = ?", [req.params.username], (err, rows, fields) => {
         if (!err) {
