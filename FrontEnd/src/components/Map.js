@@ -1,26 +1,14 @@
 import React, { Component } from 'react';
 import { GoogleApiWrapper, InfoWindow, Marker } from 'google-maps-react';
-import axios from 'axios'
 
 import CurrentLocation from './location';
-
-var users = []
-
-axios.get('http://localhost:3000/user/').then(response => {
-	console.log(response.data);
-	users = response.data;
-}); 
-
-var myInt = setInterval(function () {
-    		axios.get('http://localhost:3000/user/').then(response => {
-			console.log(response.data);
-			users = response.data;
-			}); 
-}, 9000);
 
 
 export class MapContainer extends Component {
 	
+	constructor(props) {
+        super(props);
+    }
     state = {
         showingInfoWindow: false,
         activeMarker: {},
@@ -33,7 +21,6 @@ export class MapContainer extends Component {
             activeMarker: marker,
             showingInfoWindow: true
         });
-		console.log(this.props.user);
 	}
 
     onClose = props => {
@@ -46,7 +33,7 @@ export class MapContainer extends Component {
     };
 	
 	displayMarkers = () => {
-		return users.map((user, index) => {
+		return this.props.users.map((user, index) => {
 		  return <Marker onClick={this.onMarkerClick} key={index} name={user.username} status={user.status} position={{
 		   lat: user.latitude,
 		   lng: user.longitude
@@ -57,7 +44,7 @@ export class MapContainer extends Component {
     render() {
         return (
             <div className="App">
-                <CurrentLocation centerAroundCurrentLocation users={users} google={this.props.google}>
+                <CurrentLocation centerAroundCurrentLocation users={this.props.users} google={this.props.google}>
 					{this.displayMarkers()}
                     <InfoWindow
                         marker={this.state.activeMarker}

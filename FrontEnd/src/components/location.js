@@ -95,6 +95,7 @@ export class CurrentLocation extends React.Component {
 
         if (!children) return;
 
+
         return React.Children.map(children, c => {
             if (!c) return;
             return React.cloneElement(c, {
