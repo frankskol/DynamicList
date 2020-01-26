@@ -3,6 +3,20 @@ import { GoogleApiWrapper, InfoWindow, Marker } from 'google-maps-react';
 
 import CurrentLocation from './location';
 
+var iconBase = '/icons/';
+
+var icons = {
+        online: {
+			icon: 'IconOnline.png'
+        },
+		offline: {
+			icon: 'IconOffline.png'
+        },
+
+
+};
+
+var icon =  "iconTest.png";
 
 export class MapContainer extends Component {
 	
@@ -34,11 +48,33 @@ export class MapContainer extends Component {
 	
 	displayMarkers = () => {
 		return this.props.users.map((user, index) => {
-		  return <Marker onClick={this.onMarkerClick} key={index} name={user.username} status={user.status} position={{
-		   lat: user.latitude,
-		   lng: user.longitude
-		 }} />
+			if (user.status == 1){
+				return <Marker onClick={this.onMarkerClick} key={index} icon={icons.online.icon} name={user.username} status={user.status} position={{
+				   lat: user.latitude,
+				   lng: user.longitude
+				}} />
+			}
+			else {
+				return <Marker onClick={this.onMarkerClick} key={index} icon={icons.offline.icon} name={user.username} status={user.status} position={{
+				   lat: user.latitude,
+				   lng: user.longitude
+				}} />			
+			}
+
 		})
+	}
+	displayStatus = () => {
+		if (this.state.selectedPlace.status == 1) return "Online";
+		else return "Offline";
+	}
+	displayLocation = () => {
+		if (this.state.selectedPlace.position) {
+		return <div>
+		<h3>Location</h3>
+		<h4>Latitude: {this.state.selectedPlace.position.lat}</h4>
+		<h4>Longitude: {this.state.selectedPlace.position.lng}</h4>
+		</div>
+		}
 	}
 	
     render() {
@@ -46,6 +82,7 @@ export class MapContainer extends Component {
             <div className="App">
                 <CurrentLocation centerAroundCurrentLocation users={this.props.users} google={this.props.google}>
 					{this.displayMarkers()}
+					{console.log(icons.online)}
                     <InfoWindow
                         marker={this.state.activeMarker}
                         visible={this.state.showingInfoWindow}
@@ -53,7 +90,8 @@ export class MapContainer extends Component {
                     >
                         <div>
                             <h2>{this.state.selectedPlace.name}</h2>
-							<h4>"Status: " + {this.state.selectedPlace.status}</h4>
+								{this.displayLocation()}
+							<h4>Status:  {this.displayStatus()}</h4>
                         </div>
                     </InfoWindow>
                 </CurrentLocation>
@@ -63,5 +101,5 @@ export class MapContainer extends Component {
 }
 
 export default GoogleApiWrapper({
-    apiKey: 'API-KEY'
+    apiKey: 'API_KEY'
 })(MapContainer);

@@ -3,8 +3,8 @@ let mysqlConnection = mysql.createConnection({
     host: "host",
     user:"user",
     password:"password",
-    database: "test",
-    port: "0"
+    database: "database",
+    port: "port"
 });
 
 
