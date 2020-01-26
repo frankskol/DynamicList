@@ -2,8 +2,11 @@ import React from 'react';
 import UserService from "./UserService";
 import { Link } from 'react-router-dom';
 import axios from 'axios'
+import SplitterLayout from 'react-splitter-layout';
+import 'react-splitter-layout/lib/index.css';
 
 import MapContainer from './Map';
+import DynamicList from "./DynamicList";
 
 
 export default class Interface extends React.Component {
@@ -11,7 +14,7 @@ export default class Interface extends React.Component {
 	state = {
 	users: []
     };
-	
+
 	componentDidMount() {
 		axios.get('http://localhost:3000/user/').then(response => {
 			console.log(response.data);
@@ -32,8 +35,11 @@ export default class Interface extends React.Component {
                 <h1>
                     Map & List
                 </h1>
+				<SplitterLayout>
+				<DynamicList/>
 				<MapContainer users={this.state.users}>
 				</MapContainer>
+				</SplitterLayout>
 			</div>	
         );
     }
