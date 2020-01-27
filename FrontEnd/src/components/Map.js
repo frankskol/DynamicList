@@ -78,7 +78,7 @@ export class MapContainer extends Component {
     render() {
         return (
             <div className="App">
-                <CurrentLocation centerAroundCurrentLocation users={this.props.users} google={this.props.google}>
+                <CurrentLocation centerAroundCurrentLocation panLat={this.props.panLat} panLng={this.props.panLng} users={this.props.users} google={this.props.google}>
 					{this.displayMarkers()}
 					{console.log(icons.online)}
                     <InfoWindow
@@ -97,6 +97,7 @@ export class MapContainer extends Component {
         );
     }
 }
+
 
 export default GoogleApiWrapper({
     apiKey: 'API_KEY'

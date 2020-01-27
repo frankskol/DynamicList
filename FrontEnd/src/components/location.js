@@ -13,7 +13,8 @@ export class CurrentLocation extends React.Component {
     constructor(props) {
         super(props);
 
-        const { lat, lng } = this.props.initialCenter;
+		const lat = this.props.panLat;
+		const lng = this.props.panLng;
         this.state = {
             currentLocation: {
                 lat: lat,
@@ -46,6 +47,9 @@ export class CurrentLocation extends React.Component {
         if (prevState.currentLocation !== this.state.currentLocation) {
             this.recenterMap();
         }
+		if (prevProps.panLat !== this.props.panLat || prevProps.panLng !== this.props.panLng) {
+            this.recenterMap();
+        }
 		if (prevProps.users != this.props.users) {
 			this.renderChildren();
 		}
@@ -63,8 +67,8 @@ export class CurrentLocation extends React.Component {
             const node = ReactDOM.findDOMNode(mapRef);
 
             let { zoom } = this.props;
-            const { lat, lng } = this.state.currentLocation;
-            const center = new maps.LatLng(lat, lng);
+			const current = this.state.currentLocation;
+            const center = new maps.LatLng(current.lat, current.lng);
             const mapConfig = Object.assign(
                 {},
                 {
@@ -85,7 +89,7 @@ export class CurrentLocation extends React.Component {
         const maps = google.maps;
 
         if (map) {
-            let center = new maps.LatLng(current.lat, current.lng);
+            let center = new maps.LatLng(this.props.panLat, this.props.panLng);
             map.panTo(center);
         }
     }
@@ -127,6 +131,6 @@ CurrentLocation.defaultProps = {
         lat: 48.305862,
         lng: 14.286444
     },
-    centerAroundCurrentLocation: false,
+    centerAroundCurrentLocation: true,
     visible: true
 };

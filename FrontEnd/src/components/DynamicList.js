@@ -37,13 +37,20 @@ export default class DynamicList extends React.Component {
         return (
             <div className="App">
 			<h5>Online Users</h5>
-				<Accordion>
+				<Accordion allowMultiple="true">
                     {this.props.users.filter(user => user.status == 1).sort((a, b) =>
 						this.distance(a.latitude,a.longitude, 48.305862, 14.286444, "K").toFixed(2) - this.distance(b.latitude,b.longitude, 48.305862, 14.286444, "K").toFixed(2)
 					).map(user => {
 						var num = 1;
 						return (
-						<AccordionItem key={user.username} title={`${num++}. ${user.username} - 
+						<AccordionItem key={user.username} onExpand={() => {
+								this.props.sendCoordinates(user.latitude, user.longitude)
+								} 
+							} onClose={() => {
+								this.props.sendCoordinates(user.latitude, user.longitude)
+								}
+							}
+							title={`${num++}. ${user.username} - 
 							Distance: ${this.distance(user.latitude,user.longitude, 48.305862, 14.286444, "K").toFixed(2)} KM`}>
 							<p>
 								Location:
@@ -58,10 +65,17 @@ export default class DynamicList extends React.Component {
                 </Accordion>
 
 			<h5>Offline Users</h5>
-				<Accordion>
+				<Accordion allowMultiple="true">
                     {this.props.users.filter(user => user.status == 0).sort((a, b) => a.username.localeCompare(b.username)).map(user => {
 						return (
-						<AccordionItem key={user.username} title={`${user.username}`}>
+						<AccordionItem key={user.username} onExpand={() => {
+								this.props.sendCoordinates(user.latitude, user.longitude)
+								} 
+							} onClose = {() => {
+								this.props.sendCoordinates(user.latitude, user.longitude)
+								}
+							}
+							title={`${user.username}`}>
 							<p>
 								Last seen at:
 								<br/>

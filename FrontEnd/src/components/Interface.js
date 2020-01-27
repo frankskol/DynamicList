@@ -10,15 +10,23 @@ import DynamicList from "./DynamicList";
 
 export default class Interface extends React.Component {
 
+	constructor(props) {
+        super(props);
+		this.getCoordinates = this.getCoordinates.bind(this)
+    }
+
 	state = {
 	currentUser: localStorage.getItem('user'),
 	currentLat: localStorage.getItem('lat'),
 	currentLng: localStorage.getItem('lng'),
+	panLat: localStorage.getItem('lat'),
+	panLng: localStorage.getItem('lng'),
 	users: []
     };
 
 	componentDidMount() {
 		this.setupBeforeUnloadListener();
+		
 		axios.get('http://localhost:3000/user/').then(response => {
 			console.log(response.data);
 			this.setState({ users: response.data }); 
@@ -118,7 +126,14 @@ export default class Interface extends React.Component {
             return this.doSomethingBeforeUnload();
         });
     };
-
+	
+	getCoordinates(lat, lng){
+		this.setState({
+			panLat: lat,
+			panLng: lng
+		});
+	}
+	
 	render() {
         return (
 			<div className="App">
@@ -129,8 +144,8 @@ export default class Interface extends React.Component {
 				<button className='button' style={{margin: 20}} type="submit" onClick={this.handleLogout}> Logout</button> 
 				<button className='button' style={{margin: 20}} type="submit" onClick={this.handleDelete}> Delete Account</button>
 				<SplitterLayout>
-				<DynamicList users={this.state.users}/>
-				<MapContainer users={this.state.users}>
+				<DynamicList users={this.state.users} sendCoordinates={this.getCoordinates}/>
+				<MapContainer users={this.state.users} panLat={this.state.panLat} panLng={this.state.panLng}>
 				</MapContainer>
 				</SplitterLayout>
 			</div>	
