@@ -119,11 +119,11 @@ export default class Interface extends React.Component {
                 <h1>
                     Dynamic List
                 </h1>
-				<h2>Current User: {localStorage.getItem('user')}</h2>
+				<h4>Current User: {localStorage.getItem('user')}</h4>
 				<button className='button' style={{margin: 20}} type="submit" onClick={this.handleLogout}> Logout</button> 
 				<button className='button' style={{margin: 20}} type="submit" onClick={this.handleDelete}> Delete Account</button>
 				<SplitterLayout>
-				<DynamicList/>
+				<DynamicList users={this.state.users}/>
 				<MapContainer users={this.state.users}>
 				</MapContainer>
 				</SplitterLayout>

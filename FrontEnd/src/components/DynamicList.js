@@ -2,44 +2,51 @@ import React from 'react';
 import UserService from "./UserService";
 import { Link } from 'react-router-dom';
 import axios from 'axios'
+import { Accordion, AccordionItem } from 'react-sanfona';
 
 export default class DynamicList extends React.Component {
 
-    state = {
-        users: []
-    };
-
-    componentDidMount() {
-        axios
-            .get('http://localhost:3000/user/')
-            .then(response => {
-
-                const newUsers = response.data.map(c => {
-                    return {
-                        username: c.username
-                    };
-            });
-                const newState = Object.assign({}, this.state, {
-                    users: newUsers
-                });
-                this.setState(newState);
-            })
-            .catch(error => console.log(error));
+	constructor(props) {
+        super(props);
     }
 
     render() {
         return (
             <div className="App">
+			<h5>Online Users</h5>
+				<Accordion>
+                    {this.props.users.filter(user => user.status == 1).map(user => {
+						return (
+						<AccordionItem title={`Item ${user.username}`}>
+							<p>
+								Location:
+								<br/>
+								Latitude - {user.latitude}
+								<br/>
+								Longitude - {user.longitude}
+							</p>
+						</AccordionItem>						
+						);
+					})}
+                </Accordion>
 
-                <ul>
-                    {this.state.users.map(user => (
-                        <li key={user.username}>
-                            User: {user.username}
-                        </li>
-                    ))}
-
-                </ul>
-
+			<h5>Offline Users</h5>
+				<Accordion>
+                    {this.props.users.filter(user => user.status == 0).map(user => {
+						return (
+						<AccordionItem title={`Item ${user.username}`}>
+							<p>
+								Location:
+								<br/>
+								Latitude - {user.latitude}
+								<br/>
+								Longitude - {user.longitude}
+							</p>
+						</AccordionItem>						
+						);
+					})}
+                </Accordion>
+				
 
             </div>
         );

@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from 'react-router-dom';
-import './style.css';
 import UserInput from "./UserInput";
 import axios from 'axios'
 

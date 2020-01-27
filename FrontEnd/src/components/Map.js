@@ -68,9 +68,9 @@ export class MapContainer extends Component {
 	displayLocation = () => {
 		if (this.state.selectedPlace.position) {
 		return <div>
-		<h3>Location</h3>
-		<h4>Latitude: {this.state.selectedPlace.position.lat}</h4>
-		<h4>Longitude: {this.state.selectedPlace.position.lng}</h4>
+		<h6>Location</h6>
+		<p>Latitude: {this.state.selectedPlace.position.lat}</p>
+		<p>Longitude: {this.state.selectedPlace.position.lng}</p>
 		</div>
 		}
 	}
@@ -87,9 +87,9 @@ export class MapContainer extends Component {
                         onClose={this.onClose}
                     >
                         <div>
-                            <h2>{this.state.selectedPlace.name}</h2>
+                            <h5>{this.state.selectedPlace.name}</h5>
 								{this.displayLocation()}
-							<h4>Status:  {this.displayStatus()}</h4>
+							<p>Status:  {this.displayStatus()}</p>
                         </div>
                     </InfoWindow>
                 </CurrentLocation>
