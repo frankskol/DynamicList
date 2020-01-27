@@ -12,6 +12,8 @@ export default class Interface extends React.Component {
 
 	state = {
 	currentUser: localStorage.getItem('user'),
+	currentLat: localStorage.getItem('lat'),
+	currentLng: localStorage.getItem('lng'),
 	users: []
     };
 
@@ -27,7 +29,7 @@ export default class Interface extends React.Component {
 			
 			if (navigator && navigator.geolocation) {
 				navigator.geolocation.getCurrentPosition(pos => {
-					if (pos.coords.latitude != localStorage.getItem('lat') || pos.coords.longitude != localStorage.getItem('lng')) {
+					if (pos.coords.latitude != this.state.currentLat || pos.coords.longitude != this.state.currentLng) {
 						axios.post('http://localhost:3000/user/update/', {
 							username: this.state.currentUser,
 							longitude: pos.coords.longitude,
@@ -43,6 +45,10 @@ export default class Interface extends React.Component {
 					  }).catch(error => { console.log(error); this.setState({ error: 'Error during location update' }) })
 					  localStorage.setItem('lat', pos.coords.latitude);
 					  localStorage.setItem('lng', pos.coords.longitude);
+						this.setState({
+							currentLat: localStorage.getItem('lat'),
+							currentLng: localStorage.getItem('lng')
+						});
 					}
                 });
 			}
@@ -59,8 +65,8 @@ export default class Interface extends React.Component {
   
 			axios.post('http://localhost:3000/user/update/', {
 				username: this.state.currentUser,
-				longitude: localStorage.getItem('lng'),
-				latitude: localStorage.getItem('lat'),
+				longitude: this.state.currentLng,
+				latitude: this.state.currentLat,
 				status: '0'
 				  }).then(function (response) {  
 						if(response.data == 'Update successful'){
@@ -90,8 +96,8 @@ export default class Interface extends React.Component {
     doSomethingBeforeUnload = () => {
         axios.post('http://localhost:3000/user/update/', {
 				username: this.state.currentUser,
-				longitude: localStorage.getItem('lng'),
-				latitude: localStorage.getItem('lat'),
+				longitude: this.state.currentLng,
+				latitude: this.state.currentLat,
 				status: '0'
 				  }).then(function (response) {  
 						if(response.data == 'Update successful'){
