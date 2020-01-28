@@ -1,7 +1,5 @@
 import React from 'react';
-import UserService from "./UserService";
 import { Link } from 'react-router-dom';
-import axios from 'axios'
 import { Accordion, AccordionItem } from 'react-sanfona';
 
 export default class DynamicList extends React.Component {
@@ -10,6 +8,7 @@ export default class DynamicList extends React.Component {
         super(props);
     }
 	
+	//Formula for calculating distance between two coordinates
 	distance = (lat1, lon1, lat2, lon2, unit) => {
 		if ((lat1 == lat2) && (lon1 == lon2)) {
 			return 0;
@@ -32,58 +31,65 @@ export default class DynamicList extends React.Component {
 		}
 	}
 	
-	
+	//Clickable list implemented as accordion
     render() {
         return (
             <div className="App">
+			
+			//List differentiates between online and offline users based on a filter for the status variable
 			<h5>Online Users</h5>
 				<Accordion allowMultiple="true">
                     {this.props.users.filter(user => user.status == 1).sort((a, b) =>
+						//Online sorts registered users based on their distance to the defined center location
 						this.distance(a.latitude,a.longitude, 48.305862, 14.286444, "K").toFixed(2) - this.distance(b.latitude,b.longitude, 48.305862, 14.286444, "K").toFixed(2)
 					).map(user => {
 						var num = 1;
 						return (
-						<AccordionItem key={user.username} onExpand={() => {
-								this.props.sendCoordinates(user.latitude, user.longitude)
-								} 
-							} onClose={() => {
-								this.props.sendCoordinates(user.latitude, user.longitude)
+							//Accordion items send their user coordinates to interface when clicked
+							<AccordionItem key={user.username} onExpand={() => {
+									this.props.sendCoordinates(user.latitude, user.longitude)
+									} 
+								} onClose={() => {
+									this.props.sendCoordinates(user.latitude, user.longitude)
+									}
 								}
-							}
-							title={`${num++}. ${user.username} - 
-							Distance: ${this.distance(user.latitude,user.longitude, 48.305862, 14.286444, "K").toFixed(2)} KM`}>
-							<p>
-								Location:
-								<br/>
-								Latitude - {user.latitude}
-								<br/>
-								Longitude - {user.longitude}
-							</p>
-						</AccordionItem>						
+								title={`${num++}. ${user.username} - 
+								Distance: ${this.distance(user.latitude,user.longitude, 48.305862, 14.286444, "K").toFixed(2)} KM`}>
+								<p>
+									Location:
+									<br/>
+									Latitude - {user.latitude}
+									<br/>
+									Longitude - {user.longitude}
+								</p>
+							</AccordionItem>						
 						);
 					})}
                 </Accordion>
 
 			<h5>Offline Users</h5>
 				<Accordion allowMultiple="true">
-                    {this.props.users.filter(user => user.status == 0).sort((a, b) => a.username.localeCompare(b.username)).map(user => {
+                    {this.props.users.filter(user => user.status == 0).sort((a, b) => 
+						//Offline list sorts users based on alphabetic order
+						a.username.localeCompare(b.username)).map(user => {
 						return (
-						<AccordionItem key={user.username} onExpand={() => {
-								this.props.sendCoordinates(user.latitude, user.longitude)
-								} 
-							} onClose = {() => {
-								this.props.sendCoordinates(user.latitude, user.longitude)
+							//Accordion items send their user coordinates to interface when clicked
+							<AccordionItem key={user.username} onExpand={() => {
+									this.props.sendCoordinates(user.latitude, user.longitude)
+									} 
+								} onClose = {() => {
+									this.props.sendCoordinates(user.latitude, user.longitude)
+									}
 								}
-							}
-							title={`${user.username}`}>
-							<p>
-								Last seen at:
-								<br/>
-								Latitude - {user.latitude}
-								<br/>
-								Longitude - {user.longitude}
-							</p>
-						</AccordionItem>						
+								title={`${user.username}`}>
+								<p>
+									Last seen at:
+									<br/>
+									Latitude - {user.latitude}
+									<br/>
+									Longitude - {user.longitude}
+								</p>
+							</AccordionItem>						
 						);
 					})}
                 </Accordion>

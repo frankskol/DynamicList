@@ -3,7 +3,7 @@ const Router = express.Router();
 const mysqlConnection = require("../connection");
 
 
-// get all user
+// Get all users
 Router.get("/", (req, res) =>{
     mysqlConnection.query("SELECT * from react.User", (err, rows, fields) => {
         if (!err) {
@@ -15,7 +15,7 @@ Router.get("/", (req, res) =>{
     })
 })
 
-//get one user
+//Get one user
 Router.get("/:username", (req, res) =>{
     mysqlConnection.query("SELECT * from react.User WHERE username = ?", [req.params.username], (err, rows, fields) => {
         if (!err) {
@@ -27,7 +27,7 @@ Router.get("/:username", (req, res) =>{
     })
 })
 
-//delete one user
+//Delete one user
 Router.delete("/:username", (req, res) =>{
 
     mysqlConnection.query("DELETE FROM react.User WHERE username = ?", [req.params.username], (err, rows, fields) => {
@@ -40,7 +40,7 @@ Router.delete("/:username", (req, res) =>{
     })
 })
 
-//insert one user
+//Insert one user
 Router.post("/add/", (req, res) =>{
     mysqlConnection.query("INSERT INTO react.User (username, longitude, latitude, status) VALUES (?, ?, ?, ?)", [req.body.username, req.body.longitude, req.body.latitude, req.body.status], (err, rows, fields) => {
         if (!err) {
@@ -53,7 +53,7 @@ Router.post("/add/", (req, res) =>{
     })
 })
 
-//update one user
+//Update one user
 Router.post("/update/", (req, res) =>{
     mysqlConnection.query("UPDATE react.User SET longitude = ?, latitude = ?, status = ? WHERE username = ?", [ req.body.longitude, req.body.latitude, req.body.status, req.body.username], (err, rows, fields) => {
         if (!err) {

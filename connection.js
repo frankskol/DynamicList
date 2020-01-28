@@ -1,4 +1,6 @@
 let mysql = require("mysql");
+
+//Connection to Database
 let mysqlConnection = mysql.createConnection({
     host: "host",
     user:"user",

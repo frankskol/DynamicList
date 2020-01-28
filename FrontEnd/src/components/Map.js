@@ -26,7 +26,8 @@ export class MapContainer extends Component {
         activeMarker: {},
         selectedPlace: {}
     };
-
+	
+	//Shows info window when clicking on marker
     onMarkerClick = (props, marker, e) => {
         this.setState({
             selectedPlace: props,
@@ -35,6 +36,7 @@ export class MapContainer extends Component {
         });
 	}
 
+	//Closes the info window
     onClose = props => {
         if (this.state.showingInfoWindow) {
             this.setState({
@@ -44,6 +46,7 @@ export class MapContainer extends Component {
         }
     };
 	
+	//Renders all markers passed down from Interface
 	displayMarkers = () => {
 		return this.props.users.map((user, index) => {
 			if (user.status == 1){
@@ -61,10 +64,14 @@ export class MapContainer extends Component {
 
 		})
 	}
+	
+	//Displays status in the info window as On- or Offline instead of 1 or 0
 	displayStatus = () => {
 		if (this.state.selectedPlace.status == 1) return "Online";
 		else return "Offline";
 	}
+	
+	//Displays marker coordinates in the info window
 	displayLocation = () => {
 		if (this.state.selectedPlace.position) {
 		return <div>
@@ -78,6 +85,8 @@ export class MapContainer extends Component {
     render() {
         return (
             <div className="App">
+				
+				//PanLat and PanLng are passed down to the location component
                 <CurrentLocation centerAroundCurrentLocation panLat={this.props.panLat} panLng={this.props.panLng} users={this.props.users} google={this.props.google}>
 					{this.displayMarkers()}
 					{console.log(icons.online)}

@@ -13,11 +13,11 @@ class App extends Component {
   
   render() {
     return (
+		//Defines existing Routes. The initial screen is LogIn, which then links to Interface
         <Router>
             <Switch>
                 <Route path="/" exact component={Login}/>
                 <Route path="/map" exact component={Interface}/>
-                <Route path="/dynamicList" exact component={DynamicList}/>
             </Switch>
         </Router>
     )

@@ -22,6 +22,8 @@ export class CurrentLocation extends React.Component {
             }
         };
     }
+	
+	//Centers arround current location if centerAroundCurrentLocation == true and proceeds to load map
     componentDidMount() {
         if (this.props.centerAroundCurrentLocation) {
             if (navigator && navigator.geolocation) {
@@ -39,6 +41,7 @@ export class CurrentLocation extends React.Component {
         this.loadMap();
     }
 
+	//Checks on state and prop updates, takes actions accordingly
     componentDidUpdate(prevProps, prevState) {
 		
         if (prevProps.google !== this.props.google) {
@@ -55,6 +58,7 @@ export class CurrentLocation extends React.Component {
 		}
     }
 
+	//Creates a new Map object
     loadMap() {
         if (this.props && this.props.google) {
             // checks if google is available
@@ -81,6 +85,7 @@ export class CurrentLocation extends React.Component {
         }
     }
 
+	//Recenters an existing map object
     recenterMap() {
         const map = this.map;
         const current = this.state.currentLocation;
@@ -93,7 +98,8 @@ export class CurrentLocation extends React.Component {
             map.panTo(center);
         }
     }
-
+    
+	//Renders map
     renderChildren() {
         const { children } = this.props;
 
