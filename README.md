@@ -1,68 +1,52 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+# Dynamic List
 
-In the project directory, you can run:
+This project creates a dynamic list of registered users which are connected to Google Maps markers. 
+The project is divided in two folders. The current folder contains the back-end, while the front-end folder contains the front-end.
 
-### `npm start`
+##Installation
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+To install, run:
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+```
+npm install
+```
 
-### `npm test`
+Then repeat the command at the FrontEnd folder.
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Then, install the dependencies in FrontEnd:
+```
+npm install react-sanfona
+npm install -save react-splitter-layout
+npm install react-router-dom
+npm install -save react-router
+```
 
-### `npm run build`
+Now you have to setup your server connection and your Google Maps API Key.
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+For the connection, specify your database connection in the "connection.js" file at the main folder.
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+For the API key, edit "apiKey" in the "Map.js" file at FrondEnd/src/components/
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+##Running
 
-### `npm run eject`
+To run the project in development mode, you can run:
+```
+npm start
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+For creating a production run, you can run:
+```
+npm build run
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+First run the back-end in the main folder. After a server connection is established, run the front-end.
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Configuration
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+DynamicList sends periodic requests to the server to get the current registered users and their positions. The request interval is set in componentDidMount() from "Interface.js". Default value: 10000.
 
-## Learn More
+Google Maps is initialized at the user's current location. This changed in centerAroundCurrentLocation from "location.js". In case centerAroundCurrentLocation is set to false, the map will center at the defined initialCenter coordinates, also in "location.js".
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+By default, DynamicList allows CORS from localhost:3001, which is where the FrontEnd will be running in case the program is run in a local computer. This can be changed at app.use in "server.js".  
