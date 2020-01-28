@@ -3,6 +3,17 @@ const Router = express.Router();
 const mysqlConnection = require("../connection");
 
 
+/*
+This class expects that the server has the following SQL Table:
+CREATE TABLE User (
+	username VARCHAR2(30) PRIMARY KEY,
+	password VARCHAR2(30) NOT NULL,
+	longitude DOUBLE(30,5) NOT NULL,
+	latitude DOUBLE(30,5) NOT NULL,
+	status BOOLEAN
+);
+*/
+
 // Get all users
 Router.get("/", (req, res) =>{
     mysqlConnection.query("SELECT * from react.User", (err, rows, fields) => {
