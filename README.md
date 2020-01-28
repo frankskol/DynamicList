@@ -5,7 +5,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 This project creates a dynamic list of registered users which are connected to Google Maps markers. 
 The project is divided in two folders. The current folder contains the back-end, while the front-end folder contains the front-end.
 
-##Installation
+## Installation
 
 To install, run:
 
@@ -29,7 +29,7 @@ For the connection, specify your database connection in the "connection.js" file
 
 For the API key, edit "apiKey" in the "Map.js" file at FrondEnd/src/components/
 
-##Running
+## Running
 
 To run the project in development mode, you can run:
 ```
