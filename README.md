@@ -20,7 +20,9 @@ npm install
 
 Now you have to setup your server connection and your Google Maps API Key.
 
-For the connection, specify your database connection in the "connection.js" file at the main folder.
+If you want to host the back-end locally, specify your database connection in the "connection.js" file at the main folder.
+
+If you decide to run the back-end in a remote server, specify the user table URL at App.js
 
 For the API key, edit "apiKey" in the "Map.js" file at FrondEnd/src/components/
 

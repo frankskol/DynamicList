@@ -154,7 +154,7 @@ h6 { font-size: 1.7rem; line-height: 1.6;  letter-spacing: 0; }
 p {
   margin-top: 0; 
   font-family: Arial;
-  display: block;
+  display: inline-block;
   font-weight: 400;
   text-decoration: none;
   color: #555;

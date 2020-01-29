@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import FlipMove from 'react-flip-move'; //Takes care of transitions
 import Collapsible from 'react-collapsible';
 
@@ -93,7 +92,7 @@ export default class DynamicList extends React.Component {
 
 			<h5>Offline Users</h5>
 			<FlipMove>
-                    {this.renderOfflineChildren()}
+                {this.renderOfflineChildren()}
 			</FlipMove>
             </div>
         );

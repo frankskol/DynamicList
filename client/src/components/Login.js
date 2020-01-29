@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from 'react-router-dom';
 import axios from 'axios'
 
 export class Login extends React.Component {
@@ -7,8 +6,10 @@ export class Login extends React.Component {
 	constructor(props){
 		super(props);
 		this.state = {lng: 0, lat: 0, username: '', error: ''}
+		this.movePage = this.movePage.bind(this)
 	}
 	
+	//Gets current user location on mount
 	componentDidMount() {
 		if (this.state.lng == 0 || this.state.lat == 0){
 			if (navigator && navigator.geolocation) {
@@ -26,6 +27,7 @@ export class Login extends React.Component {
         this.setState({ username: event.target.value, error: '' });
     };
 
+	//Does and INSERT or UPDATE with the username value and switches to the Map screen
     handleSubmit = event => {
         event.preventDefault();
         if (this.state.username === '') {
@@ -39,6 +41,7 @@ export class Login extends React.Component {
             })
 		}
         else {
+			console.log(window.backend);
 			axios.get(window.backend + this.state.username).then(resp => {
 				if ((resp.data.length || []).length === 0){
 					axios.post(window.backend + 'add/', {
@@ -49,7 +52,7 @@ export class Login extends React.Component {
 				  })
 				  .then(function (response) {  
 					if(response.data == 'Insert successful'){
-						window.location = '/map';
+						this.movePage();
 						console.log('success');
 					}
 					if(response.data == 'Insert failed'){
@@ -66,7 +69,7 @@ export class Login extends React.Component {
 					status: '1'
 				  }).then(function (response) {  
 						if(response.data == 'Update successful'){
-							window.location = '/map';
+							this.movePage();
 							console.log('success');
 						}
 						if(response.data == 'Update failed'){
@@ -78,7 +81,13 @@ export class Login extends React.Component {
 			localStorage.setItem('user', this.state.username);
 			localStorage.setItem('lat', this.state.lng);
 			localStorage.setItem('lng', this.state.lat);
+			this.movePage();
         }
+    }
+	
+	//Method for passing the Screen change to App.js
+	movePage = () => {
+        this.props.switchPage("Maps");
     }
     render() {
         return (

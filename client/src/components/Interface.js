@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import axios from 'axios'
 import SplitterLayout from 'react-splitter-layout';
 import 'react-splitter-layout/lib/index.css';
@@ -12,6 +11,7 @@ export default class Interface extends React.Component {
 	constructor(props) {
         super(props);
 		this.getCoordinates = this.getCoordinates.bind(this)
+		this.movePage = this.movePage.bind(this)
     }
 	
 	//There are two important states categories. 
@@ -63,7 +63,7 @@ export default class Interface extends React.Component {
                 });
 			}
 			
-		})}, 10000);
+		})}, 7000);
 	}
 	componentWillUnmount() {
 	  clearInterval(this.interval);
@@ -71,36 +71,39 @@ export default class Interface extends React.Component {
 	}
 	
 	handleLogout = event => {
-        event.preventDefault();
-  
-			axios.post(window.backend + 'update/', {
-				username: this.state.currentUser,
-				longitude: this.state.currentLng,
-				latitude: this.state.currentLat,
-				status: '0'
-				  }).then(function (response) {  
-						if(response.data == 'Update successful'){
-							window.location = '/';
-							console.log('Logout Succesful');
-						}
-						if(response.data == 'Update failed'){
-							throw "Logout failed";
-						}
-				  }).catch(error => { console.log(error); this.setState({ error: 'Logout failed' }) })
+		axios.post(window.backend + 'update/', {
+			username: this.state.currentUser,
+			longitude: this.state.currentLng,
+			latitude: this.state.currentLat,
+			status: '0'
+			  }).then(function (response) {  
+					if(response.data == 'Update successful'){
+						this.movePage();
+						console.log('Logout Succesful');
+					}
+					if(response.data == 'Update failed'){
+						throw "Logout failed";
+					}
+			 }).catch(error => { console.log(error); this.setState({ error: 'Logout failed' }) })
 			localStorage.clear();
+			this.movePage();
     }
 	handleDelete = event => {
-        event.preventDefault();
-			axios.delete(window.backend + this.state.currentUser).then(function (response) {  
-						if(response.data == 'Deletion successful'){
-							window.location = '/';
-							console.log('Deletion successful');
-						}
-						else{
-							throw "Deletion failed";
-						}
-				  }).catch(error => { console.log(error); this.setState({ error: 'Deletion failed' }) })
-			localStorage.clear();
+		axios.delete(window.backend + this.state.currentUser).then(function (response) {  
+					if(response.data == 'Deletion successful'){
+						this.movePage();
+						console.log('Deletion successful');
+					}
+					else{
+						throw "Deletion failed";
+					}
+			  }).catch(error => { console.log(error); this.setState({ error: 'Deletion failed' }) })
+		localStorage.clear();
+		this.movePage();
+    }
+	
+	movePage = () => {
+        this.props.switchPage("Login");
     }
 	
     doSomethingBeforeUnload = () => {
@@ -111,7 +114,6 @@ export default class Interface extends React.Component {
 				status: '0'
 				  }).then(function (response) {  
 						if(response.data == 'Update successful'){
-							window.location = '/';
 							console.log('Logout Succesful');
 						}
 						if(response.data == 'Update failed'){

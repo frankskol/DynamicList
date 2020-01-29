@@ -63,6 +63,9 @@
   white-space: nowrap;
   background-color: transparent;
   margin: 5px;
+  box-sizing: border-box;
+  display: inline-block;
+  position: relative;
 }
 
 .Collapsible__contentInner {
@@ -85,26 +88,22 @@
 }
 
 .Collapsible__trigger {
-  display: block;
   font-weight: 600;
-  text-decoration: none;
   color: #555;
-  position: relative;
   border: 1px solid #bbb;
   border-radius: 4px;
+  box-sizing: border-box;
   padding: 10px;
   background: white;
   color: #555;
-
-
-
+  display: inline-block;
+  position: relative;
+  
   &:after {
     font-family: 'FontAwesome';
     content: '\f107';
-    position: absolute;
     right: 10px;
     top: 10px;
-    display: block;
     transition: transform 300ms;
   }
 
