@@ -3,7 +3,6 @@ import './App.css';
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import Login from "./components/Login";
 import Interface from "./components/Interface";
-import DynamicList from "./components/DynamicList";
 import './components/css/style.css';
 import './components/css/skeleton.css';
 

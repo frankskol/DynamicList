@@ -13,14 +13,9 @@ To install, run:
 npm install
 ```
 
-Then repeat the command at the FrontEnd folder.
-
-Then, install the dependencies in FrontEnd:
+Then repeat the command in the FrontEnd folder.
 ```
-npm install react-sanfona
-npm install -save react-splitter-layout
-npm install react-router-dom
-npm install -save react-router
+npm install
 ```
 
 Now you have to setup your server connection and your Google Maps API Key.

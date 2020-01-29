@@ -1,12 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { Accordion, AccordionItem } from 'react-sanfona';
+import FlipMove from 'react-flip-move'; //Takes care of transitions
+import Collapsible from 'react-collapsible';
 
 export default class DynamicList extends React.Component {
-
-	constructor(props) {
-        super(props);
-    }
 	
 	//Formula for calculating distance between two coordinates
 	distance = (lat1, lon1, lat2, lon2, unit) => {
@@ -31,68 +27,69 @@ export default class DynamicList extends React.Component {
 		}
 	}
 	
-	//Clickable list implemented as accordion
+	//Clickable list implemented as collapsible for the online users. On click updates the sendCoordinates props.
+	renderOnlineChildren = () => {
+		return this.props.users.filter(user => user.status == 1).sort((a, b) =>
+			this.distance(a.latitude,a.longitude, 48.305862, 14.286444, "K").toFixed(2) - this.distance(b.latitude,b.longitude, 48.305862, 14.286444, "K").toFixed(2)
+			).map(user => {
+				return (
+				<Collapsible transitionTime="200" key={user.username} onOpen={() => {
+					this.props.sendCoordinates(user.latitude, user.longitude)
+					} 
+				} onClose={() => {
+					this.props.sendCoordinates(user.latitude, user.longitude)
+					}
+				}
+				trigger={`${user.username} - 
+					Distance: ${this.distance(user.latitude,user.longitude, 48.305862, 14.286444, "K").toFixed(2)} KM`}>
+					<p>
+					Location:
+					<br/>
+					Latitude - {user.latitude}
+					<br/>
+					Longitude - {user.longitude}
+					</p>
+				</Collapsible>						
+			);
+		})
+	}
+	
+	//Clickable list implemented as collapsible for the offline users. On click updates the sendCoordinates props.
+	renderOfflineChildren = () => {
+		return this.props.users.filter(user => user.status == 0).sort((a, b) => a.username.localeCompare(b.username)).map(user => {
+			return (
+				<Collapsible transitionTime="200" key={user.username} onOpen={() => {
+						this.props.sendCoordinates(user.latitude, user.longitude)
+					}
+				} onClose = {() => {
+						this.props.sendCoordinates(user.latitude, user.longitude)
+					}
+				}
+				trigger={`${user.username}`}>
+					<p>
+					Last seen at:
+					<br/>
+					Latitude - {user.latitude}
+					<br/>
+					Longitude - {user.longitude}
+					</p>
+				</Collapsible>						
+			);
+		})		
+	}
+	
     render() {
         return (
             <div className="App">
-			
-			//List differentiates between online and offline users based on a filter for the status variable
 			<h5>Online Users</h5>
-				<Accordion allowMultiple="true">
-                    {this.props.users.filter(user => user.status == 1).sort((a, b) =>
-						//Online sorts registered users based on their distance to the defined center location
-						this.distance(a.latitude,a.longitude, 48.305862, 14.286444, "K").toFixed(2) - this.distance(b.latitude,b.longitude, 48.305862, 14.286444, "K").toFixed(2)
-					).map(user => {
-						var num = 1;
-						return (
-							//Accordion items send their user coordinates to interface when clicked
-							<AccordionItem key={user.username} onExpand={() => {
-									this.props.sendCoordinates(user.latitude, user.longitude)
-									} 
-								} onClose={() => {
-									this.props.sendCoordinates(user.latitude, user.longitude)
-									}
-								}
-								title={`${num++}. ${user.username} - 
-								Distance: ${this.distance(user.latitude,user.longitude, 48.305862, 14.286444, "K").toFixed(2)} KM`}>
-								<p>
-									Location:
-									<br/>
-									Latitude - {user.latitude}
-									<br/>
-									Longitude - {user.longitude}
-								</p>
-							</AccordionItem>						
-						);
-					})}
-                </Accordion>
+			<FlipMove>
+				{this.renderOnlineChildren()}
+			</FlipMove>
 
 			<h5>Offline Users</h5>
-				<Accordion allowMultiple="true">
-                    {this.props.users.filter(user => user.status == 0).sort((a, b) => 
-						//Offline list sorts users based on alphabetic order
-						a.username.localeCompare(b.username)).map(user => {
-						return (
-							//Accordion items send their user coordinates to interface when clicked
-							<AccordionItem key={user.username} onExpand={() => {
-									this.props.sendCoordinates(user.latitude, user.longitude)
-									} 
-								} onClose = {() => {
-									this.props.sendCoordinates(user.latitude, user.longitude)
-									}
-								}
-								title={`${user.username}`}>
-								<p>
-									Last seen at:
-									<br/>
-									Latitude - {user.latitude}
-									<br/>
-									Longitude - {user.longitude}
-								</p>
-							</AccordionItem>						
-						);
-					})}
-                </Accordion>
+			<FlipMove>
+                    {this.renderOfflineChildren()}
+			</FlipMove>
             </div>
         );
     }

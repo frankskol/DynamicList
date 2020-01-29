@@ -3,8 +3,6 @@ import { GoogleApiWrapper, InfoWindow, Marker } from 'google-maps-react';
 
 import CurrentLocation from './location';
 
-var iconBase = '/icons/';
-
 var icons = {
         online: {
 			icon: 'IconOnline.png'
@@ -18,9 +16,6 @@ var icons = {
 
 export class MapContainer extends Component {
 	
-	constructor(props) {
-        super(props);
-    }
     state = {
         showingInfoWindow: false,
         activeMarker: {},
@@ -85,8 +80,7 @@ export class MapContainer extends Component {
     render() {
         return (
             <div className="App">
-				
-				//PanLat and PanLng are passed down to the location component
+				{/* PanLat and PanLng are passed down to the location component */}
                 <CurrentLocation centerAroundCurrentLocation panLat={this.props.panLat} panLng={this.props.panLng} users={this.props.users} google={this.props.google}>
 					{this.displayMarkers()}
 					{console.log(icons.online)}

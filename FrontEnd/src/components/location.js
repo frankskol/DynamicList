@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import axios from 'axios'
 
 const mapStyles = {
     map: {
@@ -88,8 +87,6 @@ export class CurrentLocation extends React.Component {
 	//Recenters an existing map object
     recenterMap() {
         const map = this.map;
-        const current = this.state.currentLocation;
-
         const google = this.props.google;
         const maps = google.maps;
 
