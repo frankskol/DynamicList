@@ -3,16 +3,17 @@ import './App.css';
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import Login from "./components/Login";
 import Interface from "./components/Interface";
+import DynamicList from "./components/DynamicList";
 import './components/css/style.css';
 import './components/css/skeleton.css';
 
-
+//Define the backend location
+window.backend="http://localhost:3000/user/";
 
 class App extends Component {
   
   render() {
     return (
-		//Defines existing Routes. The initial screen is LogIn, which then links to Interface
         <Router>
             <Switch>
                 <Route path="/" exact component={Login}/>
