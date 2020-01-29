@@ -1,8 +1,13 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import FlipMove from 'react-flip-move'; //Takes care of transitions
 import Collapsible from 'react-collapsible';
 
 export default class DynamicList extends React.Component {
+
+	constructor(props) {
+        super(props);
+    }
 	
 	//Formula for calculating distance between two coordinates
 	distance = (lat1, lon1, lat2, lon2, unit) => {
@@ -42,12 +47,12 @@ export default class DynamicList extends React.Component {
 				}
 				trigger={`${user.username} - 
 					Distance: ${this.distance(user.latitude,user.longitude, 48.305862, 14.286444, "K").toFixed(2)} KM`}>
-					<p>
-					Location:
+					<p style={{fontWeight: 600}}>
+					&ensp;Location:
 					<br/>
-					Latitude - {user.latitude}
+					&emsp; Latitude - {user.latitude}
 					<br/>
-					Longitude - {user.longitude}
+					&emsp; Longitude - {user.longitude}
 					</p>
 				</Collapsible>						
 			);
@@ -66,7 +71,7 @@ export default class DynamicList extends React.Component {
 					}
 				}
 				trigger={`${user.username}`}>
-					<p>
+					<p style={{fontWeight: 600}}>
 					Last seen at:
 					<br/>
 					Latitude - {user.latitude}
