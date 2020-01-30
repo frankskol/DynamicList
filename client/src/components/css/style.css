@@ -64,7 +64,7 @@
   background-color: transparent;
   margin: 5px;
   box-sizing: border-box;
-  display: inline-block;
+  display: block;
   position: relative;
 }
 
@@ -73,6 +73,7 @@
   border: 1px solid #bbb;
   box-sizing: border-box;
   color: #555;  
+  display: block;
   background-color: #eee;
 
   p {
@@ -96,7 +97,7 @@
   padding: 10px;
   background: white;
   color: #555;
-  display: inline-block;
+  display: block;
   position: relative;
   
   &:after {
